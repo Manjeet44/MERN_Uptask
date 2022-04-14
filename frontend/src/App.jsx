@@ -6,6 +6,7 @@ import NuevoPassword from './paginas/NuevoPassword';
 import OlvidePassword from './paginas/OlvidePassword';
 import ConfirmarCuenta from './paginas/ConfirmarCuenta';
 
+
 function App() {
 
   return (
