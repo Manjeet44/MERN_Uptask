@@ -1,7 +1,6 @@
 import {useState, useEffect, createContext} from 'react';
 import clienteAxios from '../config/clienteAxios';
 import {useNavigate} from 'react-router-dom';
-import NuevoProyecto from '../paginas/NuevoProyecto';
 
 const ProyectosContext = createContext();
 
@@ -11,6 +10,7 @@ const ProyectosProvaider = ({children}) => {
     const [proyecto, setProyecto] = useState({});
     const [alerta, setAlerta] = useState({});
     const [cargando, setCargando] = useState(false);
+    const [modalFormularioTarea, setModalFormularioTarea] = useState(false);
 
     const navigate = useNavigate();
 
@@ -164,6 +164,10 @@ const ProyectosProvaider = ({children}) => {
         }
     }
 
+    const handleModalTarea = () => {
+        setModalFormularioTarea(!modalFormularioTarea);
+    }
+
     return (
         <ProyectosContext.Provider
             value={{
@@ -174,7 +178,9 @@ const ProyectosProvaider = ({children}) => {
                 obtenerProyecto,
                 proyecto,
                 cargando,
-                eliminarProyecto
+                eliminarProyecto,
+                modalFormularioTarea,
+                handleModalTarea
             }}
         >
             {children}
