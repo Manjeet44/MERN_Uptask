@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useProyectos from '../hooks/useProyectos';
 import Alerta from './Alerta';
 import { useParams } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 const PRIORIDAD = ['Baja', 'Media', 'Alta'];
 
 const ModalFormularioTareas = () => {
+    const [id, setId] = useState('');
     const [nombre, setNombre] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [fechaEntrega, setFechaEntrega] = useState('');
@@ -14,7 +15,23 @@ const ModalFormularioTareas = () => {
     const params = useParams();
 
 
-    const {modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea} = useProyectos();
+    const {modalFormularioTarea, handleModalTarea, mostrarAlerta, alerta, submitTarea, tarea} = useProyectos();
+
+    useEffect(() => {
+        if(tarea?._id) {
+            setId(tarea._id);
+            setNombre(tarea.nombre);
+            setDescripcion(tarea.descripcion);
+            setFechaEntrega(tarea.fechaEntrega?.split('T')[0]);
+            setPrioridad(tarea.prioridad);
+            return;
+        }
+        setId('');
+        setNombre('');
+        setDescripcion('');
+        setFechaEntrega('');
+        setPrioridad('');
+    }, [tarea]);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -26,7 +43,8 @@ const ModalFormularioTareas = () => {
             });
             return
         }
-        await submitTarea({nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id});
+        await submitTarea({id, nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id});
+        setId('');
         setNombre('');
         setDescripcion('');
         setFechaEntrega('');
@@ -49,7 +67,7 @@ const ModalFormularioTareas = () => {
                         {/*header*/}
                         <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                         <h3 className="text-3xl font-semibold">
-                            Crear Tarea
+                            {id ? 'Editar Tarea' : 'Crear Tarea'}
                         </h3>
                         <button
                             className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -149,7 +167,7 @@ const ModalFormularioTareas = () => {
                             <input
                                 type="submit"
                                 className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
-                                value='Crear Tarea'
+                                value={id ? 'Guardar Cambios' : 'Crear Tarea'}
                             />                                        
                         </div>
                         </form>
