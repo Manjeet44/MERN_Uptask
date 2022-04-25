@@ -30,7 +30,7 @@ const proyectosSchema = mongoose.Schema({
             ref: 'Tarea'
         }
     ],
-    colaboradres: [
+    colaboradores: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Usuario'
