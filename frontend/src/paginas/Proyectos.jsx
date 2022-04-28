@@ -12,7 +12,7 @@ const Proyectos = () => {
 
   useEffect(() => {
     socket = io(import.meta.env.VITE_BACKEND_URL)
-    socket.emit('prueba', 'Andreu')
+    socket.emit('prueba', proyectos)
   }, []);
 
   const {msg} = alerta;
