@@ -1,6 +1,10 @@
 import {useState, useEffect, createContext} from 'react';
 import clienteAxios from '../config/clienteAxios';
 import {useNavigate} from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
+//import io from 'socket.io-client';
+
+//let socket;
 
 const ProyectosContext = createContext();
 
@@ -18,6 +22,9 @@ const ProyectosProvaider = ({children}) => {
     const [buscador, setBuscador] = useState(false);
 
     const navigate = useNavigate();
+
+    const {auth} = useAuth();
+
 
     useEffect(() => {
         const obtenerProyectos = async () => {
@@ -38,7 +45,11 @@ const ProyectosProvaider = ({children}) => {
             }
         }
         obtenerProyectos();
-    }, [])
+    }, [auth])
+
+    /*useEffect(() => {
+        socket = io(import.meta.env.VITE_BACKEND_URL);
+    }, []);*/
 
     const mostrarAlerta = alerta => {
         setAlerta(alerta);
@@ -215,6 +226,10 @@ const ProyectosProvaider = ({children}) => {
             setProyecto(proyectoActualizado);
             setAlerta({});
             setModalFormularioTarea(false);
+
+            //Socket io
+
+            //socket.emit("nueva tarea", data)
         } catch (error) {
             console.log(error);
         }
@@ -402,6 +417,21 @@ const ProyectosProvaider = ({children}) => {
         setBuscador(!buscador);
     }
 
+    /*//Socket io
+    const submitTareasProyecto = (tarea) => {
+        //Agrega la tarea al STate
+        const proyectoActualizado = {...proyecto}
+        proyectoActualizado.tareas = [...proyectoActualizado.tareas, tarea];
+        setProyecto(proyectoActualizado);
+    }*/
+
+    const cerrarSesionProyectos = () => {
+        setProyecto({});
+        setProyectos([]);
+        setAlerta({});
+
+    }
+
     return (
         <ProyectosContext.Provider
             value={{
@@ -429,7 +459,8 @@ const ProyectosProvaider = ({children}) => {
                 eliminarColaborador,
                 completarTarea,
                 buscador,
-                handleBuscador
+                handleBuscador,
+                cerrarSesionProyectos
             }}
         >
             {children}

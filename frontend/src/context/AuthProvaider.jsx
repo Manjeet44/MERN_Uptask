@@ -1,5 +1,4 @@
 import {useState, useEffect, createContext} from 'react';
-import {useNavigate} from 'react-router-dom';
 import clienteAxios from '../config/clienteAxios';
 
 const AuthContext = createContext();
@@ -40,13 +39,18 @@ const AuthProvaider = ({children}) => {
         autenticarUsuario();
     }, []);
 
+    const cerrarSesionAuth = () => {
+        setAuth({})
+    }
+
     
     return (
         <AuthContext.Provider
             value={{
                 setAuth,
                 auth,
-                cargando
+                cargando,
+                cerrarSesionAuth
             }}
         >
             {children}
