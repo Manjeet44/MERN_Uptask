@@ -39,21 +39,26 @@ const servidor = app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 })
 
-//Socket io
+/*//Socket io
 import {Server} from 'socket.io';
 
 const io = new Server(servidor, {
     pingTimeout: 60000,
     cors: {
         origin: process.env.FRONTEND_URL,
-    }
+    },
 });
 
-io.on('connection', (socket) => {
-    console.log('Conectado a socket.io');
+io.on("connection", (socket) => {
+    console.log("Conectado a socket.io");
 
     //Definir los eventos de socket io
-    socket.on('prueba', (proyectos) => {
-        console.log('Prueba desde Socket io', proyectos)
+
+    socket.on("abrir proyecto", (proyecto) => {
+        socket.join(proyecto)
     });
-});
+
+    socket.on("nueva tarea", tarea => {
+        socket.on(tarea.proyecto).emit("tarea agregada", tarea)
+    })
+}); */
